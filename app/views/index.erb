@@ -1,45 +1,72 @@
 <div>
-	<h1>Welcome to the game!</h1>
-<% if current_user %>
-	<a href="/logout">logout</a>
-	<a href="/play">Play!</a>
-	<h3>Here is your best time: </h3>
-<% else %>
-	<div id="login">
-		<h2>Login to play:</h2>
-		<% if @login_fail %>
-			<ul>
-				<li><%= @login_fail %></li>
+	<div class="top">
+		<h1>Welcome to the game!</h1>
+			<div class="howto cm">
+		<h3>How to Play:</h3>
+			<ul class="list">
+				<li>Run around the whitespace and avoid the enemy</li>
+				<li>DON'T TOUCH THE RED OR IT'S GAME OVER!</li>
 			</ul>
-		<% end %>
-		<form method="POST" action="/login">
-			<input type="text" placeholder="name" name="name">
-			<input type="password" placeholder="password" name="password">
-			<input type="submit" value="login">
-		</form>
+		</div >
+		<div class="controls cm">
+		<h3>Controls:</h3>
+			<ul class="list">
+				<li>arrow keys to move</li>
+				<li>any other key to stop</li>
+			</ul>
+		</div>
 	</div>
-	<div id="register">
-		<h2>New? Register Here:</h2>
-		<% if @errors %>
-		<% @errors.each do |e| %>
-			<ul>
-				<li><%= e %></li>
+<% if current_user %>
+	<div class="info">
+		<div class="userlinks">
+			<ul class="list inline">
+				<li><a class="logout" href="/logout">logout</a></li>
+				<li><a class="play" href="/play">Play!</a></li>
 			</ul>
+		</div>
+		<h3 class="best">Here is your best time: <%= current_user.best_game.survival_time%> seconds</h3>
+	</div>
+<% else %>
+	<div class="info">
+		<div id="login">
+			<h2>Login to play:</h2>
+			<% if @login_fail %>
+				<ul>
+					<li><%= @login_fail %></li>
+				</ul>
 			<% end %>
-		<% end %>
-		<form method="POST" action="/register">
-			<input type="text" placeholder="name" name="name">
-			<input type="text" placeholder="password" name="password">
-			<input type="submit" value="register">
-		</form>
+			<form method="POST" action="/login">
+				<input type="text" placeholder="name" name="name">
+				<input type="password" placeholder="password" name="password">
+				<input class="bttn" type="submit" value="login">
+			</form>
+		</div>
+		<div id="register">
+			<h2>New? Register Here:</h2>
+			<% if @errors %>
+			<% @errors.each do |e| %>
+				<ul>
+					<li><%= e %></li>
+				</ul>
+				<% end %>
+			<% end %>
+			<form method="POST" action="/register">
+				<input type="text" placeholder="name" name="name">
+				<input type="password" placeholder="password" name="password">
+				<input class="bttn" type="submit" value="register">
+			</form>
+		</div>
 	</div>
 <% end %>
 	<div id="high-scores">
-		<h2>Today's Highscores:</h2>
+		<h2>AllTime Highscores:</h2>
+		<hr>
 		<div id="scores">
-			<ul>
-				<li>scores</li>
-			</ul>
+			<ol>
+			<% @users.each do |user|%>
+				<li><%= user.name%> | TopScore: <%= user.best_game.survival_time %> sec | Played: <%= user.best_game.played_at%></li>
+			<%end%>
+			</ol>
 		</div>
 	</div>
 </div>
