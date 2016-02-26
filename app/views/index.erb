@@ -1,0 +1,45 @@
+<div>
+	<h1>Welcome to the game!</h1>
+<% if current_user %>
+	<a href="/logout">logout</a>
+	<a href="/play">Play!</a>
+	<h3>Here is your best time: </h3>
+<% else %>
+	<div id="login">
+		<h2>Login to play:</h2>
+		<% if @login_fail %>
+			<ul>
+				<li><%= @login_fail %></li>
+			</ul>
+		<% end %>
+		<form method="POST" action="/login">
+			<input type="text" placeholder="name" name="name">
+			<input type="password" placeholder="password" name="password">
+			<input type="submit" value="login">
+		</form>
+	</div>
+	<div id="register">
+		<h2>New? Register Here:</h2>
+		<% if @errors %>
+		<% @errors.each do |e| %>
+			<ul>
+				<li><%= e %></li>
+			</ul>
+			<% end %>
+		<% end %>
+		<form method="POST" action="/register">
+			<input type="text" placeholder="name" name="name">
+			<input type="text" placeholder="password" name="password">
+			<input type="submit" value="register">
+		</form>
+	</div>
+<% end %>
+	<div id="high-scores">
+		<h2>Today's Highscores:</h2>
+		<div id="scores">
+			<ul>
+				<li>scores</li>
+			</ul>
+		</div>
+	</div>
+</div>
