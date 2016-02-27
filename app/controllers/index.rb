@@ -1,4 +1,6 @@
 get '/' do 
+	users = User.all
+	@users = users.sort {|a, b| b.best_game.survival_time <=> a.best_game.survival_time}
 	erb :'index'
 end
 

@@ -4,4 +4,30 @@ class User < ActiveRecord::Base
   validates :name, presence: true, uniqueness: true
 
   has_secure_password
+
+  def best_game
+  	if self.games.any?
+	  	games = self.games
+	  	scores = []
+	  	games.each do |game|
+	  		scores << game.survival_time
+	  	end
+	  	best = scores.max
+	  	best_game = games.select { |game| game.survival_time = best}[0]
+	end
+  end
+
+  # def latest_time
+  # 	if self.games.any?
+  # 		games = self.games
+  # 		times = []
+  # 		games.each do |game|
+  # 			times << game.played_at
+  # 		end
+  # 		latest = times.max
+  # 		latest_time = games.select{|game| game.played_at = latest}[0]
+  # 		latest_time.survival_time
+  # 	end
+  # end
+  
 end
