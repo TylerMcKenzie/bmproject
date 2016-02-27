@@ -1,7 +1,8 @@
 class User < ActiveRecord::Base
   # Remember to create a migration!
   has_many :games
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
+  validates :name, uniqueness: true
 
   has_secure_password
 
@@ -14,7 +15,12 @@ class User < ActiveRecord::Base
 	  	end
 	  	best = scores.max
 	  	best_game = games.select { |game| game.survival_time = best}[0]
-	end
+	  end
+  end
+
+  def self.leader_board
+    users = User.all
+    users = users.sort {|a, b| b.best_game.survival_time <=> a.best_game.survival_time}
   end
 
   # def latest_time

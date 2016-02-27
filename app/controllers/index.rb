@@ -1,6 +1,5 @@
 get '/' do 
-	users = User.all
-	@users = users.sort {|a, b| b.best_game.survival_time <=> a.best_game.survival_time}
+	@users = User.leader_board
 	erb :'index'
 end
 
@@ -15,6 +14,7 @@ post '/login' do
 		redirect '/'
 	else
 		@login_fail = "Can't find that user"
+		@users = User.leader_board
 		erb :'index'
 	end
 end
@@ -22,9 +22,11 @@ end
 post '/register' do 
 	user = User.new({name: params[:name], password: params[:password]})
 	if user.save
+		Game.create(user_id: user.id, survival_time: 0, played_at: DateTime.now)
 		redirect '/'
 	else
 		@errors = user.errors.full_messages
+		@users = User.leader_board
 		erb :'index'
 	end
 end
